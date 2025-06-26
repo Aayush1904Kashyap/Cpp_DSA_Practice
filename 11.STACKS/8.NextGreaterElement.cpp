@@ -1,44 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool hasRedundantBrackets(string s)
-{
-    stack<char> st;
+ vector<int> NGE(vector<int>& arr){
+    int n=arr.size();
+    vector<int> nge(n);
+    stack<int>st;
+    for(int i=n-1;i>=0;i--){
+        while(!st.empty()&& st.top()<=arr[i]){
+            st.pop();
 
-    for (char ch : s) {
-        if (ch == '(' || ch == '+' || ch == '-' || ch == '*' || ch == '/') {
-            st.push(ch);
-        } 
-        else if (ch == ')') {
-            bool isRedundant = true;
-
-            while (!st.empty() && st.top() != '(') {
-                char top = st.top();
-                if (top == '+' || top == '-' || top == '*' || top == '/') {
-                    isRedundant = false;
-                }
-                st.pop();
-            }
-
-            if (!st.empty()) st.pop(); // Pop the '('
-
-            if (isRedundant) {
-                return true;
-            }
         }
+        if(st.empty()){
+            nge[i]=-1;
+        }else{
+            nge[i]=st.top();
+        }
+        st.push(arr[i]);
     }
+    return nge;
+ }
 
-    return false;
-}
 
 int main() {
-    string s = "((a+b))";
-
-    if (hasRedundantBrackets(s)) {
-        cout << "Redundant" << endl;
-    } else {
-        cout << "Not Redundant" << endl;
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
     }
 
+    vector<int> result = NGE(arr);
+    for (int val : result) {
+        cout << val << " "<< endl;
+    }
+    
     return 0;
 }
