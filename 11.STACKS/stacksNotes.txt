@@ -1,0 +1,93 @@
+Stack Data Structure
+
+What is a Stack?
+- A stack is a linear data structure that follows the LIFO principle — Last In, First Out.
+- The element added last is removed first.
+
+Basic Stack Operations:
+- push(): Insert an element onto the stack
+- pop(): Remove the top element from the stack
+- top(): View the top element without removing it
+- empty(): Check if the stack is empty (returns true/false)
+
+Stack Syntax in C++:
+#include <stack>
+stack<int> s;        // Create a stack of integers
+
+s.push(2);           // Push element onto the stack
+s.pop();             // Pop (remove) the top element
+s.top();             // Access the top element
+s.empty();           // Check if stack is empty
+
+Stack Implementation Methods:
+1. Using Arrays
+2. Using Linked Lists
+
+Stack Using Array – Internal Working
+
+Properties:
+- arr[] → Array to store elements
+- top → Index of the top element (initially -1)
+- size → Maximum size of stack
+
+push(int x):
+if (top >= size - 1)
+    // Stack Overflow
+else {
+    top++;
+    arr[top] = x;
+}
+
+pop():
+if (top < 0)
+    // Stack Underflow
+else
+    top--;
+
+top():
+if (top == -1)
+    // Stack is empty
+else
+    return arr[top];
+
+empty():
+return (top == -1);
+
+Two Stack in One Array – C++ Implementation
+
+Concept:
+- Instead of creating two separate stacks, we manage both stacks in a single array to optimize space usage.
+- Stack1 grows from left to right (index 0 to size-1).
+- Stack2 grows from right to left (index size-1 to 0).
+- Overflow is checked by ensuring there is space between top1 and top2.
+
+Class: TwoStack
+
+Data Members:
+- int* arr → dynamically allocated array to store both stacks
+- int top1 → index of the top element of Stack1 (starts at -1)
+- int top2 → index of the top element of Stack2 (starts at size)
+- int size → total size of the array
+
+Constructor:
+- Initializes size, top1 = -1, top2 = size, and allocates memory for the array
+
+Functions:
+
+1. push1(int num)
+- Inserts element into Stack1
+- Condition: if (top2 - top1 > 1), then there's space
+- If no space → print "Stack1 Overflow"
+
+2. push2(int num)
+- Inserts element into Stack2
+- Condition: if (top2 - top1 > 1), then there's space
+- If no space → print "Stack2 Overflow"
+
+3. pop1()
+- Removes and returns top element of Stack1
+- If empty (top1 < 0) → return -1
+
+4. pop2()
+- Removes and returns top element of Stack2
+- If empty (top2 >= size) → return -1

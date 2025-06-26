@@ -1,0 +1,146 @@
+LINKED LIST NOTES (C++ CONCEPTS ONLY)
+======================================
+
+1. Node Structure (Singly Linked List)
+--------------------------------------
+- A node contains:
+  - data (value)
+  - next (pointer to the next node)
+
+
+2. Convert Array to Linked List
+-------------------------------
+Approach:
+- Create the head node using the first element.
+- Use a temporary pointer (`mover`) to add new nodes for remaining elements.
+- Link each node to the previous one via `next`.
+- Return the head.
+
+
+3. Length of Linked List
+------------------------
+Approach:
+- Start with count = 0.
+- Traverse through the list from head to nullptr.
+- Increment count at each node.
+- Final count is the length.
+
+
+4. Check if a Value Exists in Linked List
+-----------------------------------------
+Approach:
+- Traverse from head to end.
+- If any node’s data matches the given value, return true.
+- Else, return false after traversal ends.
+
+
+5. Delete Head Node
+-------------------
+Approach:
+- Store next node of head.
+- Delete the current head.
+- Return new head.
+
+
+6. Delete Tail Node
+-------------------
+Approach:
+- Traverse to second-last node (node before tail).
+- Delete the tail node.
+- Set second-last node's next to nullptr.
+
+
+7. Delete k-th Node (1-based index)
+-----------------------------------
+Approach:
+- If k == 1, delete head.
+- Else, move to (k-1)th node.
+- Skip the kth node by adjusting next pointers.
+- Delete kth node.
+
+
+8. Print Linked List
+--------------------
+Approach:
+- Start from head.
+- Print each node's data.
+- Stop when nullptr is reached.
+
+
+DOUBLY LINKED LIST (DLL) CONCEPTS
+==================================
+
+Node Structure (Doubly Linked List)
+-----------------------------------
+- A node contains:
+  - data (value)
+  - next (pointer to next node)
+  - back (pointer to previous node)
+
+
+1. Convert Array to DLL
+-----------------------
+Approach:
+- Create head node using first element.
+- For each element:
+  - Create a new node.
+  - Set previous node’s next to new node.
+  - Set new node’s back to previous node.
+- Return head.
+
+
+2. Insert at Head
+-----------------
+Approach:
+- Create a new node.
+- Set its next to current head.
+- Set current head’s back to the new node (if head exists).
+- Return the new node as head.
+
+
+3. Insert at Tail
+-----------------
+Approach:
+- Traverse to the last node.
+- Create a new node.
+- Set last node’s next to new node.
+- Set new node’s back to last node.
+
+
+4. Delete Head
+--------------
+Approach:
+- Move head to next node.
+- Set new head’s back to nullptr (if it exists).
+- Delete original head.
+- Return new head.
+
+
+5. Delete Tail
+--------------
+Approach:
+- Traverse to the last node.
+- Access its previous node using back.
+- Set previous node’s next to nullptr.
+- Delete the last node.
+
+
+6. Reverse DLL
+--------------
+Approach:
+- Traverse through the list.
+- Swap each node’s next and back pointers.
+- After loop, the last processed node becomes the new head.
+
+
+CHEAT SHEET (QUICK RECALL)
+===========================
+
+| Operation             | Key Pointer Actions                              |
+|----------------------|--------------------------------------------------|
+| Insert at head (SLL) | New node → head; return new node                 |
+| Insert at head (DLL) | New node → head; head.back = new node            |
+| Insert at tail       | Traverse → last node → add new node              |
+| Delete head          | Delete head; return head->next                   |
+| Delete tail          | Traverse to second-last; unlink last node        |
+| Reverse DLL          | Swap next and back at each node                  |
