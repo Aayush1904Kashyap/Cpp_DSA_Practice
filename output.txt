@@ -1,1 +1,1 @@
--1 2 -1 
+total water units trapped is: 6
