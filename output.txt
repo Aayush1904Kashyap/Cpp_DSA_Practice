@@ -1,1 +1,1 @@
-total water units trapped is: 6
+Sum of Subarray Minimums: 593
