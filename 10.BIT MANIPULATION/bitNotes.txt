@@ -1,0 +1,130 @@
+Bit Manipulation
+====================
+
+Theory:
+-------
+Bit manipulation is a technique in competitive programming that involves the manipulation of individual bits in the binary representations of numbers. It is valuable because it allows for efficient problem solving, often improving both time and memory performance.
+
+Common Bitwise Operators:
+--------------------------
+- Bitwise AND (&): Sets each bit to 1 if both bits are 1.
+- Bitwise OR (|): Sets each bit to 1 if one of two bits is 1.
+- Bitwise XOR (^): Sets each bit to 1 if only one of two bits is 1.
+- Bitwise NOT (~): Inverts all the bits.
+- Left Shift (<<): Shifts bits to the left, filling with 0s.
+- Right Shift (>>): Shifts bits to the right, discarding shifted bits.
+
+
+Masks in Bit Manipulation
+==========================
+
+Theory:
+-------
+A mask is a binary pattern used to isolate or modify specific bits in a number. Masks are often created using bitwise shift operations and are crucial for tasks like setting, clearing, toggling, or checking specific bits.
+
+How to Create and Use Masks:
+----------------------------
+1. Create a mask with 1 at position i:
+   mask = (1 << i)
+2. Use with AND to check/set/unset bits:
+   number & mask     --> checks if bit is set
+   number | mask     --> sets the bit
+   number & ~mask    --> clears the bit
+3. Use with XOR to toggle:
+   number ^ mask     --> toggles the bit at position i
+
+Example Pseudocode:
+-------------------
+i = 3
+mask = (1 << i)  // 00001000
+
+// Set bit at position 3
+number = number | mask
+
+// Clear bit at position 3
+number = number & ~mask
+
+// Toggle bit at position 3
+number = number ^ mask
+
+// Check if bit is set at position 3
+if (number & mask) ≠ 0:
+    Bit is set
+else:
+    Bit is unset
+
+
+Useful Bitwise Tricks for Competitive Programming
+=================================================
+
+Set a Bit of a Number:
+----------------------
+Theory:
+To set the bit at position i (0-indexed), we use the bitwise OR operation.
+
+Approach:
+1. Create a mask with a 1 at the ith bit: (1 << i)
+2. Apply bitwise OR with the original number.
+
+Pseudocode:
+number = number | (1 << i)
+
+
+Unset a Bit of a Number:
+------------------------
+Theory:
+To clear the bit at position i, use bitwise AND with the negation of the mask.
+
+Approach:
+1. Create a mask with a 1 at the ith bit: (1 << i)
+2. Invert the mask: ~(1 << i)
+3. AND it with the number.
+
+Pseudocode:
+number = number & (~(1 << i))
+
+
+Flip a Bit of a Number:
+------------------------
+Theory:
+To toggle a bit at a given position i, use XOR.
+
+Approach:
+1. Create the mask: (1 << i)
+2. Apply XOR.
+
+Pseudocode:
+number = number ^ (1 << i)
+
+
+Check if Bit at nth Position is Set or Unset:
+---------------------------------------------
+Theory:
+To check whether the bit at position i is 1 or 0, use AND.
+
+Approach:
+1. Create a mask: (1 << i)
+2. AND with number
+3. If result is non-zero, bit is set.
+
+Pseudocode:
+if (number & (1 << i)) ≠ 0:
+    Bit is set
+else:
+    Bit is unset
+
+
+Check Whether n is a Power of Two:
+----------------------------------
+Theory:
+A number is a power of two if it has exactly one bit set.
+
+Approach:
+1. Ensure n > 0
+2. Check if n & (n - 1) is 0
+
+Pseudocode:
+if n > 0 and (n & (n - 1)) == 0:
+    n is a power of two
+else:
+    n is not a power of two
