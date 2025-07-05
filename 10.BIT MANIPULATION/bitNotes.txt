@@ -1,6 +1,3 @@
-Bit Manipulation
-====================
-
 Theory:
 -------
 Bit manipulation is a technique in competitive programming that involves the manipulation of individual bits in the binary representations of numbers. It is valuable because it allows for efficient problem solving, often improving both time and memory performance.
