@@ -1,1 +1,1 @@
-Smallest possible number after removal: 1219
+MAX SCORE IS: 12
