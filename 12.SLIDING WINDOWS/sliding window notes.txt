@@ -1,0 +1,126 @@
+/* 
+===============================
+       Sliding Window Notes
+===============================
+
+Sliding Window / Two Pointers:
+- Always maintain 2 pointers: left (l) and right (r)
+- Move the pointers to expand or shrink the window based on conditions.
+
+Types:
+---------------------------------------------------------
+1️⃣ Fixed (Constant) Window Size:  
+   👉 Max/Min of sum or value over fixed window size 'k'.
+---------------------------------------------------------
+Example: Maximum sum of subarray of size 'k'
+---------------------------------------------------------
+C++ Template:
+int maxSumFixedWindow(vector<int>& arr, int k) {
+    int l = 0, sum = 0, maxSum = 0;
+    for (int r = 0; r < arr.size(); r++) {
+        sum += arr[r];
+        if (r - l + 1 == k) {
+            maxSum = max(maxSum, sum);
+            sum -= arr[l++];
+        }
+    }
+    return maxSum;
+}
+---------------------------------------------------------
+
+2️⃣ Longest Subarray/Substring with Condition:
+👉 Find longest subarray satisfying a condition (e.g., sum ≤ k).
+
+Steps:
+- Expand r, add to sum
+- If condition breaks, shrink l
+- Update result if condition satisfied
+
+C++ Template (Optimized - Matches Handwritten Note):
+int longestSubarrayWithSumAtMostK(vector<int>& arr, int k) {
+    int l = 0, r = 0, sum = 0, maxLen = 0, n = arr.size();
+    while (r < n) {
+        sum += arr[r];
+
+        // Shrink window if sum > k
+        if (sum > k) {
+            sum -= arr[l];
+            l++;
+        }
+
+        // Update answer if condition satisfied
+        if (sum <= k) {
+            maxLen = max(maxLen, r - l + 1);
+        }
+
+        r++;  // Expand window
+    }
+    return maxLen;
+}
+---------------------------------------------------------
+
+3️⃣ Count Number of Subarrays with Condition:
+👉 Count subarrays with exact sum k using sliding window.
+
+Logic:
+- Count subarrays with sum ≤ k → x
+- Count subarrays with sum ≤ k-1 → y
+- Result = x - y
+
+C++ Template:
+int countSubarraysWithSumAtMost(vector<int>& arr, int k) {
+    int l = 0, r = 0, sum = 0, count = 0, n = arr.size();
+    while (r < n) {
+        sum += arr[r];
+        while (sum > k) {
+            sum -= arr[l++];
+        }
+        count += r - l + 1;
+        r++;
+    }
+    return count;
+}
+
+int countSubarraysWithExactSum(vector<int>& arr, int k) {
+    return countSubarraysWithSumAtMost(arr, k) - countSubarraysWithSumAtMost(arr, k - 1);
+}
+---------------------------------------------------------
+
+4️⃣ Minimum (Shortest) Window with Condition:
+👉 Smallest subarray with sum ≥ target.
+
+Steps:
+- Expand r until condition satisfied
+- Shrink l to minimize window
+- Keep tracking minimum length
+
+C++ Template:
+int minSubArrayLen(int target, vector<int>& arr) {
+    int l = 0, r = 0, sum = 0, minLen = INT_MAX, n = arr.size();
+    while (r < n) {
+        sum += arr[r];
+        while (sum >= target) {
+            minLen = min(minLen, r - l + 1);
+            sum -= arr[l++];
+        }
+        r++;
+    }
+    return (minLen == INT_MAX) ? 0 : minLen;
+}
+---------------------------------------------------------
+
+✅ General Sliding Window Flow:
+1. Expand r → Add to sum/freq.
+2. If condition fails, shrink l (while or if).
+3. Check window → Store answer if needed.
+4. Move r forward.
+
+✅ Tips:
+- Use sliding window for contiguous subarray problems.
+- Can be extended with frequency maps for strings/characters.
+- For "count of subarrays", sliding window works well for positive numbers.
+
+===============================
+          END OF NOTES
+===============================
+*/
