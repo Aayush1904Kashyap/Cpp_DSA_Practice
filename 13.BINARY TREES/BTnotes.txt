@@ -1,0 +1,22 @@
+Binary Trees
+
+-non linear data structures
+-one node connected with multiple nodes
+-terms: root,node,children,parents,siblings,ancestors,descendent,leaf
+-Have less than equal to 2
+
+-node{
+    int data;
+    node *left;
+    node *right;
+}
+
+-transversal:
+    1. level order transversal
+    2. reverse level order transversal
+    3. inorder transversal => LNR
+    4. pre order transversal => NLR
+    5. post order transversal => LRN
+         L= left part me jao
+         R= right part me jao
+         N= print karvado
