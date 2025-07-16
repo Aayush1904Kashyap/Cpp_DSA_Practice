@@ -51,77 +51,166 @@ else:
     Bit is unset
 
 
-Useful Bitwise Tricks for Competitive Programming
-=================================================
-
-Set a Bit of a Number:
-----------------------
-Theory:
-To set the bit at position i (0-indexed), we use the bitwise OR operation.
-
-Approach:
-1. Create a mask with a 1 at the ith bit: (1 << i)
-2. Apply bitwise OR with the original number.
-
-Pseudocode:
-number = number | (1 << i)
 
 
-Unset a Bit of a Number:
-------------------------
-Theory:
-To clear the bit at position i, use bitwise AND with the negation of the mask.
+Extra Bit Manipulation Tricks
+=============================
 
-Approach:
-1. Create a mask with a 1 at the ith bit: (1 << i)
-2. Invert the mask: ~(1 << i)
-3. AND it with the number.
-
-Pseudocode:
-number = number & (~(1 << i))
-
-
-Flip a Bit of a Number:
-------------------------
-Theory:
-To toggle a bit at a given position i, use XOR.
-
-Approach:
-1. Create the mask: (1 << i)
-2. Apply XOR.
-
-Pseudocode:
-number = number ^ (1 << i)
-
-
-Check if Bit at nth Position is Set or Unset:
----------------------------------------------
-Theory:
-To check whether the bit at position i is 1 or 0, use AND.
-
-Approach:
-1. Create a mask: (1 << i)
-2. AND with number
-3. If result is non-zero, bit is set.
-
-Pseudocode:
-if (number & (1 << i)) ≠ 0:
-    Bit is set
-else:
-    Bit is unset
-
-
-Check Whether n is a Power of Two:
+1. Multiply / Divide by Power of 2
 ----------------------------------
-Theory:
-A number is a power of two if it has exactly one bit set.
+Intuition:
+Left shift multiplies by 2^k because shifting left adds zero bits at the end.
+Right shift divides by 2^k (floor division) because shifting right discards bits.
 
-Approach:
-1. Ensure n > 0
-2. Check if n & (n - 1) is 0
+Pseudocode:
+n << k   => Multiply n by 2^k
+n >> k   => Divide n by 2^k (floor division)
+
+
+2. Check if K-th Bit is Set (0-based)
+-------------------------------------
+Intuition:
+AND with a mask where only k-th bit is 1. If result is non-zero, that bit was set.
+
+Pseudocode:
+if (n & (1 << k)) != 0:
+    bit is set
+else:
+    bit is unset
+
+
+3. Set the K-th Bit
+-------------------
+Intuition:
+OR with a mask having k-th bit = 1 forces that bit to 1.
+
+Pseudocode:
+n = n | (1 << k)
+
+
+4. Unset the K-th Bit
+---------------------
+Intuition:
+AND with a mask where all bits are 1 except the k-th bit clears it.
+
+Pseudocode:
+n = n & ~(1 << k)
+
+
+5. Toggle the K-th Bit
+----------------------
+Intuition:
+XOR flips bits – if it’s 1 becomes 0, if it’s 0 becomes 1.
+
+Pseudocode:
+n = n ^ (1 << k)
+
+
+6. Clear Bits from LSB to i-th (inclusive)
+------------------------------------------
+Intuition:
+To clear bits up to i, create a mask with 0s in those positions, 1s elsewhere.
+
+Pseudocode:
+n = n & (~((1 << (i + 1)) - 1))
+
+
+7. Clear Bits from MSB to i-th (inclusive)
+------------------------------------------
+Intuition:
+To clear higher bits, keep only bits lower than i using a mask of (1 << i)-1.
+
+Pseudocode:
+n = n & ((1 << i) - 1)
+
+
+8. Count Bits to Convert a to b
+-------------------------------
+Intuition:
+Bits that differ between a and b will be 1 in XOR result. Count set bits.
+
+Pseudocode:
+diff = a ^ b
+countSetBits(diff)
+
+
+9. Generate All Subsets using Bitmask
+-------------------------------------
+Intuition:
+For n elements, 0 to (1<<n)-1 represents all possible subsets.
+
+Pseudocode:
+for mask in range(0, (1 << n)):
+    process(mask)
+
+
+10. Check if Number is Power of Two
+-----------------------------------
+Intuition:
+Power of two has exactly one set bit. So n & (n-1) == 0.
 
 Pseudocode:
 if n > 0 and (n & (n - 1)) == 0:
-    n is a power of two
+    it is power of two
+
+
+11. Count Set Bits (Brian Kernighan's Algorithm)
+------------------------------------------------
+Intuition:
+Each n & (n-1) removes the rightmost set bit. Count iterations.
+
+Pseudocode:
+count = 0
+while n > 0:
+    n = n & (n - 1)
+    count++
+
+
+12. Isolate Rightmost Set Bit
+-----------------------------
+Intuition:
+n & -n gives only the lowest set bit, others cleared.
+
+Pseudocode:
+rightmost_bit = n & (-n)
+
+
+13. Turn Off Rightmost Set Bit
+------------------------------
+Intuition:
+n & (n-1) clears only the lowest set bit.
+
+Pseudocode:
+n = n & (n - 1)
+
+
+14. Check Even/Odd
+------------------
+Intuition:
+LSB decides even(0) or odd(1).
+
+Pseudocode:
+if n & 1:
+    odd
 else:
-    n is not a power of two
+    even
+
+
+15. Swap Two Numbers Without Temp
+---------------------------------
+Intuition:
+XOR trick swaps without extra memory.
+
+Pseudocode:
+a = a ^ b
+b = a ^ b
+a = a ^ b
+
+
+16. Fast Modulo by Power of 2
+----------------------------
+Intuition:
+n % (2^k) is same as keeping only lower k bits.
+
+Pseudocode:
+n % (1 << k) == n & ((1 << k) - 1)
