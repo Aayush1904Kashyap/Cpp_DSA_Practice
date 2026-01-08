@@ -1,5 +1,11 @@
-4 4
-1 1 1 1
-1 0 0 1
-1 1 0 1
-1 0 1 1
+matrix = {
+    {1, 4, 2},
+    {5, 2, 7}
+};
+
+commands = {
+    "reverseRow 0",
+    "swapColumns 0 2",
+    "reverseColumn 1",
+    "rotate90Clockwise"
+};
