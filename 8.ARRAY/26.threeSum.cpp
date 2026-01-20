@@ -1,36 +1,88 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int* twoSum(int arr[], int n, int k) {
-    static int result[2];
-    for(int i = 0; i < n; i++) {
-        for(int j = i + 1; j < n; j++) {
-            if(arr[i] + arr[j] == k) {
-                result[0] = i;
-                result[1] = j;
-                return result;
+vector<vector<int>> threeSum(vector<int>&arr, int n) {
+    // set<vector<int>>st;
+
+    //BRUTE FORCE APPROACH
+    // for(int i = 0; i < n; i++) {
+    //     for(int j = i + 1; j < n; j++) {
+    //        for(int k=j+1;k<n;k++) 
+    //        if(arr[i] + arr[j] + arr[k] == 0) {
+    //             vector<int>temp={arr[i],arr[j],arr[k]};
+    //             sort(temp.begin(),temp.end());
+    //             st.insert(temp);
+    //         }
+    //     }
+    // }
+
+
+
+    //BETTER APPROACH
+    // for(int i=0;i<n;i++){
+    //     set<int>hashset;
+    //     for(int j=i+1;j<n;j++){
+    //         int third =-(arr[i]+arr[j]);
+    //         if(hashset.find(third)!=hashset.end()){
+    //             vector<int>temp={arr[i],arr[j],third};
+    //             sort(temp.begin(),temp.end());
+    //         st.insert(temp);
+    //         }
+    //         hashset.insert(arr[j]);
+    //     }
+    // }
+    // vector<vector<int>>result(st.begin(),st.end());
+    // return result;
+
+    //OPTIMIZED APPROACH
+
+
+
+    sort(arr.begin(),arr.end());
+    vector<vector<int>>result;
+    for(int i=0;i<n;i++){
+        if(i>0 && arr[i]==arr[i-1]) continue;
+        int j=i+1;
+        int k=n-1;
+        while(j<k){
+            int sum=arr[i] + arr[j] + arr[k];
+            if(sum<0){
+                j++;
+            }
+            else if(sum>0){
+                k--;
+            }
+            else{
+                vector<int>temp={arr[i],arr[j],arr[k]};
+                result.push_back(temp);
+                j++;
+                k--;
+                while(j<k && arr[j]==arr[j-1]) j++;
+                while(j<k && arr[k]==arr[k+1]) k--;
             }
         }
     }
-    return nullptr;
+    return result;
 }
 
 int main() {
-     int n;
+    int n;
     cin >> n;
-    int arr[n];
+
+    vector<int>arr(n);
     for (int i = 0; i < n; i++) {
         cin >> arr[i];
     }
-    int k;
-    cin >> k;
-    int* result = twoSum(arr, n, k);
 
-    if(result != nullptr) {
-        cout << "Indices: " << result[0] << ", " << result[1] << endl;
-    } else {
-        cout << "No pair found." << endl;
+    vector<vector<int>> result = threeSum(arr, n);
+
+    for (auto triplet : result) {
+        for (int x : triplet) {
+            cout << x << " ";
+        }
+        cout << endl;
     }
 
     return 0;
 }
+
