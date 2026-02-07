@@ -7,7 +7,8 @@ int n=grid.size();
 int m=grid[0].size();
 //{{r,c},t}
 queue<pair<pair<int,int>,int>> q;
-   vector<vector<int>>vis(n,vector<int>(m,0));
+
+vector<vector<int>>vis(n,vector<int>(m,0));
    
    for(int i=0;i<n;i++){
     for(int j=0;j<m;j++){
