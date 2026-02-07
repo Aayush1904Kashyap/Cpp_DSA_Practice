@@ -10,8 +10,7 @@ void dfs(int row, int col, vector<vector<int>>& ans, vector<vector<int>>& image,
     for (int i = 0; i < 4; i++) {
         int nrow = row + dr[i];
         int ncol = col + dc[i];
-
-        // check boundaries & same old color & not already filled
+        
         if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && image[nrow][ncol] == oldColor && ans[nrow][ncol] != color) {
             dfs(nrow, ncol, ans, image, color, oldColor, dr, dc);
         }

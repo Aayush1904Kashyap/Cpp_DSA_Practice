@@ -3,7 +3,7 @@ using namespace std;
 
 
   vector<vector<int>> updateMatrix(vector<vector<int>>& mat){
- int n = mat.size();
+        int n = mat.size();
         int m = mat[0].size();
         queue<pair<pair<int, int>, int>> q;
 
@@ -12,7 +12,7 @@ using namespace std;
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (mat[i][j] == 0) {
+                if (mat[i][j] == 1) {
                     q.push({{i, j}, 0});
                     vis[i][j] = 1;
                 }
@@ -50,7 +50,8 @@ int main() {
    int n,m;
     cin >> n >>m;
 
-    vector<vector<int>> arr(n, vector<int>(n));
+    vector<vector<int>> arr(n, vector<int>(m));
+
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             cin >> arr[i][j];
