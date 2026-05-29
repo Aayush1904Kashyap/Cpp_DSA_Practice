@@ -1,0 +1,160 @@
+
+CYCLIC SORT — ONE PAGE INTERVIEW NOTES
+
+1. Pattern Recognition
+Think Cyclic Sort when:
+- Array size = n
+- Numbers are in range 1...n or 0...n
+- Asked to find missing number, duplicate number, first missing positive, corrupt pair, missing numbers, duplicates
+
+Golden Question:
+"Can each number be placed at a unique correct index?"
+
+2. Core Idea
+
+For range 1...n:
+1 -> index 0
+2 -> index 1
+x -> index x-1
+
+For range 0...n:
+0 -> index 0
+1 -> index 1
+x -> index x
+
+3. Generic Template
+
+For 1...n:
+
+int i=0;
+while(i<n){
+    int correct=nums[i]-1;
+    if(nums[i]!=nums[correct])
+        swap(nums[i],nums[correct]);
+    else
+        i++;
+}
+
+For 0...n:
+
+int i=0;
+while(i<n){
+    int correct=nums[i];
+    if(nums[i]<n && nums[i]!=nums[correct])
+        swap(nums[i],nums[correct]);
+    else
+        i++;
+}
+
+4. Missing Number Trick
+
+After cyclic sort:
+
+for(int i=0;i<n;i++){
+    if(nums[i]!=i+1)
+        return i+1;
+}
+
+Memory:
+Wrong Index -> Missing Number
+
+5. Duplicate Number Trick
+
+After cyclic sort:
+
+for(int i=0;i<n;i++){
+    if(nums[i]!=i+1)
+        return nums[i];
+}
+
+Memory:
+Wrong Value -> Duplicate
+
+6. Missing + Duplicate Together
+
+if(nums[i]!=i+1){
+    duplicate=nums[i];
+    missing=i+1;
+}
+
+(LC 645)
+
+7. Multiple Missing Numbers
+
+for(int i=0;i<n;i++){
+    if(nums[i]!=i+1)
+        ans.push_back(i+1);
+}
+
+(LC 448)
+
+8. Multiple Duplicates
+
+for(int i=0;i<n;i++){
+    if(nums[i]!=i+1)
+        ans.push_back(nums[i]);
+}
+
+(LC 442)
+
+9. First Missing Positive
+
+Only place numbers if:
+nums[i] > 0 && nums[i] <= n
+
+Ignore:
+- negative numbers
+- 0
+- numbers > n
+
+(LC 41)
+
+10. Common Mistake
+
+Wrong:
+if(nums[i]!=nums[correct])
+    swap(...)
+i++;
+
+Correct:
+if(nums[i]!=nums[correct])
+    swap(...)
+else
+    i++;
+
+Reason:
+After swap, current index may still be wrong.
+
+11. Complexity
+
+Time: O(n)
+Space: O(1)
+
+12. Important Problems
+
+LC 268 - Missing Number
+LC 448 - Find All Numbers Disappeared in an Array
+LC 645 - Set Mismatch
+LC 442 - Find All Duplicates in an Array
+LC 287 - Find the Duplicate Number
+LC 41  - First Missing Positive
+
+30-SECOND REVISION
+
+Range 1...n ?
+      ↓
+Place x at index x-1
+      ↓
+Cyclic Sort
+      ↓
+Check wrong indices
+
+Wrong index  -> Missing number
+Wrong value  -> Duplicate number
+Wrong index + wrong value -> Missing + Duplicate pair
+
+Interview Trigger:
+Whenever you see an array of size n containing numbers from 1..n (or 0..n),
+ask:
+"Can I place each number at its correct index?"
+If yes, Cyclic Sort is likely the O(n), O(1) solution.
