@@ -66,7 +66,7 @@ bool subsetSumToK3(int n, int k, vector<int> &arr) {
         dp[i][0] = true;
     }
     if (arr[0] <= k) {
-        dp[0][arr[0]] = true;
+        dp[0][arr[ 0]] = true;
     }
 
     //no of nested loops will be equal to the no of base cases, here we have two base cases, so we will have two nested loops
