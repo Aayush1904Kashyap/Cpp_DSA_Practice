@@ -90,7 +90,7 @@ int main(){
         cin>>arr[i];
     }
 
-    cout<<maxProfit1(arr,fee)<<endl;
+  
     cout<<maxProfit2(arr,fee)<<endl;
     cout<<maxProfit3(arr,fee)<<endl;
     cout<<maxProfit4(arr,fee)<<endl;
