@@ -1,59 +1,230 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-int solve() {
-    int n, m;
-    if (!(cin >> n >> m)) return 0;
+struct Gate {
+    int fromR, fromC;
+    int toR, toC;
+};
 
-    vector<vector<int>> grid(n, vector<int>(m));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            cin >> grid[i][j];
+struct ProblemInput {
+    int rows, cols;
+    vector<vector<int>> grid;
+    int startR, startC;
+    int endR, endC;
+    vector<Gate> gates;
+    int maxTeleports;
+};
+
+static ProblemInput readInput() {
+    ProblemInput in{};
+    cin >> in.rows >> in.cols;
+
+    in.grid.assign(in.rows, vector<int>(in.cols));
+    for (int r = 0; r < in.rows; r++) {
+        for (int c = 0; c < in.cols; c++) {
+            cin >> in.grid[r][c];
         }
     }
 
-    // dp[row][col1][col2] initialized to -1
-    vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, -1)));
+    cin >> in.startR >> in.startC;
+    cin >> in.endR >> in.endC;
 
-    // Starting points: (0,0) and (0, m-1)
-    dp[0][0][m - 1] = grid[0][0] + grid[0][m - 1];
+    int numGates;
+    cin >> numGates;
+    in.gates.resize(numGates);
 
-    for (int i = 0; i < n - 1; i++) {
-        for (int j1 = 0; j1 < m; j1++) {
-            for (int j2 = 0; j2 < m; j2++) {
-                if (dp[i][j1][j2] == -1) continue;
+    for (int i = 0; i < numGates; i++) {
+        cin >> in.gates[i].fromR >> in.gates[i].fromC
+            >> in.gates[i].toR >> in.gates[i].toC;
+    }
 
-                // Possible moves: -1, 0, +1 for each player
-                for (int dj1 = -1; dj1 <= 1; dj1++) {
-                    for (int dj2 = -1; dj2 <= 1; dj2++) {
-                        int nj1 = j1 + dj1;
-                        int nj2 = j2 + dj2;
+    cin >> in.maxTeleports;
+    return in;
+}
 
-                        if (nj1 >= 0 && nj1 < m && nj2 >= 0 && nj2 < m) {
-                            int candies = (nj1 == nj2) ? grid[i + 1][nj1] : (grid[i + 1][nj1] + grid[i + 1][nj2]);
-                            dp[i + 1][nj1][nj2] = max(dp[i + 1][nj1][nj2], dp[i][j1][j2] + candies);
-                        }
-                    }
+/*
+ Return minimum steps from start -> end
+ Each move costs 1
+ Teleport also costs 1 and consumes one teleport charge
+*/
+int solve(int rows, int cols, const vector<vector<int>>& grid,
+          int startR, int startC,
+          int endR, int endC,
+          const vector<Gate>& gates,
+          int maxTeleports) {
+
+    // map source cell -> destination(s)
+    map<pair<int,int>, vector<pair<int,int>>> teleports;
+    for (auto &g : gates) {
+        teleports[{g.fromR, g.fromC}].push_back({g.toR, g.toC});
+    }
+
+    // dist[r][c][k] = min steps reaching cell with k teleports used
+    const int INF = 1e9;
+    vector<vector<vector<int>>> dist(
+        rows,
+        vector<vector<int>>(cols, vector<int>(maxTeleports + 1, INF))
+    );
+
+    queue<tuple<int,int,int>> q;   // r,c,used
+
+    dist[startR][startC][0] = 0;
+    q.push({startR, startC, 0});
+
+    int dr[4] = {-1,1,0,0};
+    int dc[4] = {0,0,-1,1};
+
+    while (!q.empty()) {
+        tuple<int,int,int> cur = q.front();
+q.pop();
+
+int r = get<0>(cur);
+int c = get<1>(cur);
+int used = get<2>(cur);
+
+
+        int steps = dist[r][c][used];
+
+        // normal moves
+        for (int i = 0; i < 4; i++) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+
+            if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+            if (grid[nr][nc] == 1) continue;
+
+            if (dist[nr][nc][used] > steps + 1) {
+                dist[nr][nc][used] = steps + 1;
+                q.push({nr, nc, used});
+            }
+        }
+
+        // teleport moves
+        if (used < maxTeleports && teleports.count({r,c})) {
+            for (auto &dest : teleports[{r,c}]) {
+                int nr = dest.first;
+                int nc = dest.second;
+
+                if (dist[nr][nc][used + 1] > steps + 1) {
+                    dist[nr][nc][used + 1] = steps + 1;
+                    q.push({nr, nc, used + 1});
                 }
             }
         }
     }
 
-    int max_candies = 0;
-    for (int j1 = 0; j1 < m; j1++) {
-        for (int j2 = 0; j2 < m; j2++) {
-            max_candies = max(max_candies, dp[n - 1][j1][j2]);
-        }
+    int ans = INF;
+    for (int k = 0; k <= maxTeleports; k++) {
+        ans = min(ans, dist[endR][endC][k]);
     }
-    return max_candies;
+
+    return (ans == INF ? -1 : ans);
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
+    ios::sync_with_stdio(false);
     cin.tie(NULL);
-    cout << solve() << endl;
+
+    ProblemInput in = readInput();
+
+    int answer = solve(
+        in.rows, in.cols, in.grid,
+        in.startR, in.startC,
+        in.endR, in.endC,
+        in.gates,
+        in.maxTeleports
+    );
+
+    cout << answer << '\n';
     return 0;
 }
+
+/*
+================ input.txt TEST CASES ================
+
+Test 1 (Basic Teleport)
+
+3 4
+0 0 1 0
+0 1 1 0
+0 0 0 0
+0 0
+2 3
+1
+0 1 2 2
+1
+
+Expected:
+3
+
+
+------------------------------------------------------
+
+Test 2 (Multiple Gates)
+
+3 5
+0 0 0 0 0
+1 1 1 1 0
+0 0 0 0 0
+0 0
+2 4
+2
+0 1 0 3
+0 2 2 1
+2
+
+Expected:
+5
+
+
+------------------------------------------------------
+
+Test 3 (Resource Conservation)
+
+3 4
+0 0 0 0
+0 1 1 0
+0 0 0 0
+0 0
+2 3
+1
+0 0 2 0
+1
+
+Expected:
+4
+
+
+------------------------------------------------------
+
+Test 4 (Unreachable)
+
+3 3
+0 1 0
+1 1 1
+0 1 0
+0 0
+2 2
+0
+0
+
+Expected:
+-1
+
+
+------------------------------------------------------
+
+Test 5 (Hidden edge case)
+
+1 1
+0
+0 0
+0 0
+0
+0
+
+Expected:
+0
+
+======================================================
+*/
