@@ -151,6 +151,19 @@ int kthSmallest(TreeNode* root, int k) {
         return  values[k - 1];
     }
 
+TreeNode* inorderSuccessor(TreeNode* root, int key) {
+    TreeNode* ans=NULL;
+    while(root!=NULL){
+        if(key >=root->val){
+            root=root->right;
+        }else{
+            ans=root;
+            root=root->left;
+        }
+    }
+    return ans;
+}
+
 TreeNode* buildTree(vector<string>& nodes) {
     if (nodes.empty() || nodes[0] == "null") return NULL;
 
@@ -221,14 +234,19 @@ int main() {
     cout<<ceil(root,5)<<endl;
     cout<<floor(root,5)<<endl;
 
-    TreeNode* insertresult = insertIntoBST(root, 5);
+    TreeNode* insertresult = insertIntoBST(root, 9);
 
     printTree(insertresult);
 
-    TreeNode* deleteResult = deleteNode(root, 7);
+    TreeNode* deleteResult = deleteNode(root, 6);
 
     printTree(deleteResult);
     cout<<kthSmallest(root,3)<<endl;
+
+    TreeNode* ans = inorderSuccessor(root, 4);
+
+    if (ans) cout << ans->val << endl;
+    else cout << "null" << endl;
 
     return 0;
 }
