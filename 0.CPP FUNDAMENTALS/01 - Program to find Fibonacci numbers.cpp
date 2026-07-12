@@ -14,4 +14,8 @@ int main()
         var = res;
     } 
     return 0;
+<<<<<<< HEAD
+=======
+    //hello
+>>>>>>> d2282502cde01a10a8c13e30480c6ce487f278f9
 }
