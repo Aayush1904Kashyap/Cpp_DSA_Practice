@@ -36,7 +36,7 @@ Steps:
 - If condition breaks, shrink l
 - Update result if condition satisfied
 
-C++ Template (Optimized - Matches Handwritten Note):
+C++ Template :
 int longestSubarrayWithSumAtMostK(vector<int>& arr, int k) {
     int l = 0, r = 0, sum = 0, maxLen = 0, n = arr.size();
     while (r < n) {
